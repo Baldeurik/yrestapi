@@ -4,7 +4,7 @@ import jmespath
 import logging
 
 # Настройка логирования
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class APIModule:
     def __init__(self, base_url, headers=None):
@@ -26,6 +26,7 @@ class APIModule:
         }
         try:
             logging.info("Sending authentication request...")
+            logging.debug(f"Auth request: {json.dumps(auth_request, indent=2)}")
             response = requests.post(self.base_url, json=auth_request, headers=self.headers)
             response.raise_for_status()  # Вызовет исключение для HTTP-ошибок
             auth_data = response.json()
@@ -54,6 +55,7 @@ class APIModule:
         }
         try:
             logging.info(f"Sending {method} request with params: {params}")
+            logging.debug(f"Request data: {json.dumps(request_data, indent=2)}")
             response = requests.post(self.base_url, json=request_data, headers=self.headers)
             response.raise_for_status()  # Вызовет исключение для HTTP-ошибок
             logging.debug(f"Response: {json.dumps(response.json(), indent=2)}")
@@ -65,10 +67,18 @@ class APIModule:
     def get_config(self, profile_id):
         params = ["y1564", "getprm", {"ids": {"profile": profile_id}}]
         return self.send_request("call", params)
-    
+
     def set_config(self, profile_id, config_params):
         params = ["y1564", "setprm", {"ids": {"profile": profile_id}, "params": config_params}]
-        return self.send_request("call", params)
+        response = self.send_request("call", params)
+        if response:
+            retcode = response.get("result", [None, None])[1].get("retcode")
+            retmsg = response.get("result", [None, None])[1].get("retmsg")
+            if retcode == 0:
+                logging.info(f"Configuration set successfully. Message: {retmsg}")
+            else:
+                logging.error(f"Failed to set configuration. Code: {retcode}, Message: {retmsg}")
+        return response
 
     def parse_response(self, response, key):
         if response:
@@ -78,19 +88,3 @@ class APIModule:
         else:
             logging.error("No response to parse.")
             return None
-
-# Пример использования
-if __name__ == "__main__":
-    api = APIModule(base_url="http://192.168.87.2/api/")
-    api.authenticate(username="admin", password="PleaseChangeTheAdminPassword")
-    config_response = api.get_config(profile_id="profile0")
-    if config_response:
-        answer = api.parse_response(config_response, "result[1].answer")
-        if answer:
-            logging.info("Configuration items:")
-            for item in answer:
-                logging.info(json.dumps(item, indent=4))
-        else:
-            logging.warning("No configuration items found.")
-    else:
-        logging.error("Failed to retrieve configuration.")
