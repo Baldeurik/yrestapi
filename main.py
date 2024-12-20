@@ -59,11 +59,9 @@ if __name__ == "__main__":
             "trial": {
                 "ifaces": {
                     "0": {
-                        "name": args.loopback_iface0_name,
                         "disabled": args.loopback_iface0_disabled.lower() == 'true'
                     },
                     "1": {
-                        "name": args.loopback_iface1_name,
                         "disabled": args.loopback_iface1_disabled.lower() == 'true'
                     }
                 },
@@ -74,7 +72,7 @@ if __name__ == "__main__":
             }
         }
         loopback_module.set_loopback_config(args.profile_id, loopback_config)
-        loopback_module.start_loopback_test(args.profile_id)
+        #loopback_module.start_loopback_test(args.profile_id)
         exit(0)
     if args.loopback_duration:
         try:
@@ -172,11 +170,9 @@ if __name__ == "__main__":
         "trial": {
             "ifaces": {
                 "0": {
-                    "name": args.loopback_iface0_name,
                     "disabled": args.loopback_iface0_disabled.lower() == 'true'
                 },
                 "1": {
-                    "name": args.loopback_iface1_name,
                     "disabled": args.loopback_iface1_disabled.lower() == 'true'
                 }
             },

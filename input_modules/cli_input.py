@@ -35,9 +35,8 @@ class ConditionalRequiredAction(argparse.Action):
             'profile0_service_count': ['--profile0_service_count'],
         }
         self.loopback_required = [
-            'loopback', 'loopback_iface0_name', 'loopback_iface0_mode',
-            'loopback_iface0_host', 'loopback_iface0_disabled',
-            'loopback_iface1_name', 'loopback_iface1_mode', 
+            'loopback',
+            'loopback_iface0_host', 'loopback_iface0_disabled', 
             'loopback_iface1_host', 'loopback_iface1_disabled',
             'loopback_duration', 'loopback_type'
         ]
@@ -115,10 +114,10 @@ Examples:
     loopback_group = parser.add_argument_group('Loopback Configuration')
     loopback_group.add_argument("--loopback", choices=['true', 'false'],
                                help="Enable/disable loopback test")
-    loopback_group.add_argument("--loopback_iface0_name", help="Interface 0 name")
+    #loopback_group.add_argument("--loopback_iface0_name", help="Interface 0 name")
     loopback_group.add_argument("--loopback_iface0_disabled", choices=['true', 'false'],
                                help="Disable interface 0")
-    loopback_group.add_argument("--loopback_iface1_name", help="Interface 1 name")
+    #loopback_group.add_argument("--loopback_iface1_name", help="Interface 1 name")
     loopback_group.add_argument("--loopback_iface1_disabled", choices=['true', 'false'],
                                help="Disable interface 1")
     loopback_group.add_argument("--loopback_duration", 
