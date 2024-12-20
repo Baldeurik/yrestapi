@@ -42,8 +42,10 @@ if __name__ == "__main__":
     if not api.session_id:
         logging.error("Authentication failed")
         exit(1)
+
     if args.loopback_force:
-            if LoopbackModule.force_enable_loopback(args.profile_id):
+            loopback_module = LoopbackModule(api)
+            if loopback_module.force_enable_loopback(args.profile_id):
                 logging.info("Loopback force operation completed successfully")
                 exit(0)
             else:
@@ -72,7 +74,6 @@ if __name__ == "__main__":
             }
         }
         loopback_module.set_loopback_config(args.profile_id, loopback_config)
-        #loopback_module.start_loopback_test(args.profile_id)
         exit(0)
     if args.loopback_duration:
         try:
