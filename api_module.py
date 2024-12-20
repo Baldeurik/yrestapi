@@ -69,7 +69,7 @@ class APIModule:
         return self.send_request("call", params)
 
     def set_config(self, profile_id, config_params):
-        params = ["y1564", "setprm", {"ids": {"profile": profile_id}, "params": config_params}]
+        params = ["y1564", "setprm", {"ids": {"profile": profile_id}, "parameters": config_params}]
         response = self.send_request("call", params)
         if response:
             retcode = response.get("result", [None, None])[1].get("retcode")
@@ -80,6 +80,30 @@ class APIModule:
                 logging.error(f"Failed to set configuration. Code: {retcode}, Message: {retmsg}")
         return response
 
+    def set_service_config(self, profile_id, service_id, config_params):
+        params = ["y1564", "setprm", {"ids": {"profile": profile_id, "service": service_id}, "parameters": config_params}]
+        response = self.send_request("call", params)
+        if response:
+            retcode = response.get("result", [None, None])[1].get("retcode")
+            retmsg = response.get("result", [None, None])[1].get("retmsg")
+            if retcode == 0:
+                logging.info(f"Service configuration set successfully. Message: {retmsg}")
+            else:
+                logging.error(f"Failed to set service configuration. Code: {retcode}, Message: {retmsg}")
+        return response
+
+    def start_test(self, profile_id):
+        params = ["y1564", "start", {"ids": {"profile": profile_id}}]
+        response = self.send_request("call", params)
+        if response:
+            retcode = response.get("result", [None, None])[1].get("retcode")
+            retmsg = response.get("result", [None, None])[1].get("retmsg")
+            if retcode == 0:
+                logging.info(f"Test started successfully. Message: {retmsg}")
+            else:
+                logging.error(f"Failed to start test. Code: {retcode}, Message: {retmsg}")
+        return response
+
     def parse_response(self, response, key):
         if response:
             result = jmespath.search(key, response)
@@ -88,3 +112,5 @@ class APIModule:
         else:
             logging.error("No response to parse.")
             return None
+        
+        

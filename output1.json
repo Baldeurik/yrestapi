@@ -23,9 +23,12 @@
         "step_count": 3,
         "base_flow_id": 4660,
         "conf_duration": {
-            "type": "useconds",
-            "useconds": "10000000",
-            "pld_useconds": "10000000"
+            "type": "packets",
+            "useconds": "0",
+            "packets": 50,
+            "bytes": "0",
+            "pld_useconds": "0",
+            "pld_bytes": "0"
         },
         "perf_duration": {
             "type": "useconds",
@@ -36,24 +39,8 @@
             "pld_bytes": "0"
         },
         "cir_enabled": true,
-        "eir_enabled": true,
-        "tp_enabled": false,
-        "perf_enabled": false,
-        "services": [
-            {
-                "frame_size": 1024,
-                "header": {
-                    "src": {
-                        "mac": "00:21:ce:54:11:8a",
-                        "ip": "192.168.87.2"
-                    },
-                    "dst": {
-                        "mac": "00:21:ce:54:12:ba",
-                        "ip": "192.168.87.3"
-                    }
-                },
-                "layer": 3
-            }
-        ]
+        "eir_enabled": false,
+        "tp_enabled": true,
+        "perf_enabled": true
     }
 }
